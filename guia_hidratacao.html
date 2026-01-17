@@ -98,6 +98,7 @@
                 <div class="chart-container mb-6">
                     <canvas id="waterQuantityChart"></canvas>
                 </div>
+                <p class="text-[10px] text-center text-gray-400 italic">Nota: A capacidade gástrica estimada é de ~30ml por kg de peso corporal.</p>
             </div>
         </section>
 
@@ -192,11 +193,15 @@
 
         function updateWaterData() {
             const weight = parseFloat(weightInput.value) || 0;
-            // Updated to ~25ml/kg as per SBP guidelines for extra free water
+            // Água livre: ~25ml/kg
             const targetMl = Math.round(weight * 25);
+            // Capacidade gástrica estimada: ~30ml/kg
+            const gastricCapacity = Math.round(weight * 30);
+            
             resultText.innerText = `${targetMl} ml / dia`;
+            
             if (qtyChart) {
-                qtyChart.data.datasets[0].data = [targetMl, 150];
+                qtyChart.data.datasets[0].data = [targetMl, gastricCapacity];
                 qtyChart.update();
             }
         }
@@ -205,10 +210,10 @@
         qtyChart = new Chart(ctxQty, {
             type: 'bar',
             data: {
-                labels: wrapLabels(['Água Extra (ml/dia)', 'Capacidade Gástrica']),
+                labels: wrapLabels(['Água Extra Total (ml/dia)', 'Capacidade Estomacal (por refeição)']),
                 datasets: [{
                     label: 'Volume em ml',
-                    data: [200, 150],
+                    data: [200, 240], // Valores iniciais para 8kg
                     backgroundColor: ['#4ECDC4', '#FF6B6B'],
                     borderRadius: 8
                 }]
@@ -216,8 +221,18 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { display: false }, tooltip: sharedTooltipConfig },
-                scales: { y: { beginAtZero: true, suggestedMax: 400 } }
+                plugins: { 
+                    legend: { display: false }, 
+                    tooltip: sharedTooltipConfig,
+                    title: { display: true, text: 'Volumes Dinâmicos por Peso' }
+                },
+                scales: { 
+                    y: { 
+                        beginAtZero: true, 
+                        suggestedMax: 400,
+                        title: { display: true, text: 'Volume (ml)' }
+                    } 
+                }
             }
         });
 
