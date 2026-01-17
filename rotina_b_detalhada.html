@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rotina B: Detalhes e Receitas</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        body {
+            background-color: #F7FFF7;
+            color: #292F36;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        .card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+        .benefit-tag {
+            background-color: #4ECDC4;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <header class="max-w-4xl mx-auto text-center mb-12">
+        <h1 class="text-4xl font-bold text-[#4ECDC4] mb-2">Manual da Rotina B</h1>
+        <p class="text-gray-600 italic">Terça • Quinta • Sábado</p>
+        <div class="h-1 w-24 bg-[#FF6B6B] mx-auto mt-4 rounded-full"></div>
+    </header>
+
+    <main class="max-w-4xl mx-auto space-y-12">
+
+        <!-- CAFE DA MANHA -->
+        <section class="card p-6 border-l-8 border-[#FFE66D]">
+            <div class="flex items-center space-x-4 mb-6">
+                <span class="text-4xl">🥣</span>
+                <div>
+                    <h2 class="text-2xl font-bold">Café da Manhã: Mamão Papaia</h2>
+                    <span class="benefit-tag">Digestão e Vitamina A</span>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-4">
+                    <p class="text-gray-700 text-sm"><strong>Benefício:</strong> Rico em papaína, uma enzima que auxilia na digestão. É fundamental para manter o intestino do bebé regulado.</p>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg border">
+                    <h4 class="font-bold mb-2 text-sm uppercase">👨‍🍳 Preparo:</h4>
+                    <p class="text-sm text-gray-600">Retire as sementes, corte uma fatia em formato de "C" (meia lua). Remova a casca de uma ponta para o bebé segurar e amasse o restante.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ALMOÇO DETALHADO -->
+        <section class="space-y-6">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-[#292F36]">Análise Nutricional do Prato</h2>
+                <p class="text-gray-600 mt-2">Veja os nutrientes que este prato fornece ao todo.</p>
+            </div>
+
+            <div class="card p-6">
+                <div class="chart-container mb-6">
+                    <canvas id="nutrientPolarChartB"></canvas>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card p-4 border-l-4 border-teal-400">
+                    <h3 class="font-bold text-gray-800">Zinco & Magnésio</h3>
+                    <p class="text-sm text-gray-600">Vindos do frango e da abobrinha, auxiliam no sistema nervoso e na formação dos ossos do bebé.</p>
+                </div>
+                <div class="card p-4 border-l-4 border-blue-400">
+                    <h3 class="font-bold text-gray-800">Hidratação & Ferro</h3>
+                    <p class="text-sm text-gray-600">A abobrinha garante alta hidratação, enquanto o feijão fornece o ferro necessário.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- RECEITA MINUCIOSA ALMOÇO B -->
+        <section class="card p-8 bg-white border-2 border-[#4ECDC4]">
+            <h2 class="text-2xl font-bold text-[#4ECDC4] mb-6 flex items-center">
+                <span class="mr-2">📝</span> Receita Passo a Passo: Almoço B
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div class="col-span-1 bg-teal-50 p-4 rounded-xl">
+                    <h4 class="font-bold text-teal-800 mb-2 uppercase text-xs">Ingredientes Precisos</h4>
+                    <ul class="text-xs space-y-2 text-gray-700">
+                        <li>• 1 Cubo de frango desfiado (30g)</li>
+                        <li>• 1 Cubo de feijão (30ml)</li>
+                        <li>• 1 Batata inglesa média (100g)</li>
+                        <li>• 3 a 4 Palitos de Abobrinha</li>
+                        <li>• 1 fio de azeite extravirgem</li>
+                        <li>• Temperos: Manjericão fresco</li>
+                    </ul>
+                </div>
+                <div class="col-span-2 space-y-4">
+                    <h4 class="font-bold text-gray-800 uppercase text-xs">Modo de Preparo Detalhado</h4>
+                    <ol class="text-sm space-y-3 text-gray-600">
+                        <li class="flex items-start">
+                            <span class="font-bold text-[#4ECDC4] mr-2">01.</span>
+                            <span><strong>Cozimento da Batata e Abobrinha:</strong> Corte a batata em rodelas e a abobrinha em palitos grossos. Cozinhe no vapor. A abobrinha fica pronta em 5-7 min; retire-a antes para não desmanchar. Deixe a batata até o garfo atravessar fácil.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="font-bold text-[#4ECDC4] mr-2">02.</span>
+                            <span><strong>Descongelamento:</strong> Aqueça os cubos de frango e feijão em uma panela pequena com um pouco de água filtrada ou no banho-maria até que estejam quentes e úmidos.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="font-bold text-[#4ECDC4] mr-2">03.</span>
+                            <span><strong>Montagem do Prato:</strong> Amasse a batata inglesa com o feijão. Adicione o frango desfiado (pique mais se as tiras estiverem grandes). Finalize com o azeite e o manjericão picadinho.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="font-bold text-[#4ECDC4] mr-2">04.</span>
+                            <span><strong>Servir:</strong> Disponha o purê de um lado do prato e os palitos de abobrinha do outro para o bebê pegar sozinho.</span>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                <p class="text-xs text-gray-600"><strong>Dica do Sr. Papinha:</strong> O frango pode ser mais seco para o bebê. Certifique-se de que a batata com feijão está bem molhadinha para ajudar na deglutição.</p>
+            </div>
+        </section>
+
+        <!-- LANCHE DA TARDE -->
+        <section class="card p-6 border-l-8 border-[#FF6B6B]">
+            <div class="flex items-center space-x-4 mb-6">
+                <span class="text-4xl">🍐</span>
+                <div>
+                    <h2 class="text-2xl font-bold">Lanche da Tarde: Pera Williams</h2>
+                    <span class="benefit-tag" style="background-color: #FF6B6B;">Suavidade e Hidratação</span>
+                </div>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg border">
+                <h4 class="font-bold mb-2 text-sm uppercase">👨‍🍳 Como Preparar:</h4>
+                <p class="text-sm text-gray-600">Use uma colher para raspar a polpa diretamente da fruta bem madura. Se estiver dura, cozinhe pedaços sem casca no vapor por 3-5 min.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-12 py-8 bg-[#292F36] text-white text-center rounded-t-3xl">
+        <p class="text-sm opacity-75">Guia Exclusivo: Sr. Papinha & Família</p>
+    </footer>
+
+    <script>
+        function wrapLabels(labels) {
+            return labels.map(l => Array.isArray(l) ? l : (l.length > 16 ? l.split(' ') : l));
+        }
+
+        const sharedTooltipConfig = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    return Array.isArray(label) ? label.join(' ') : label;
+                }
+            }
+        };
+
+        const ctxPolarB = document.getElementById('nutrientPolarChartB').getContext('2d');
+        new Chart(ctxPolarB, {
+            type: 'polarArea',
+            data: {
+                labels: wrapLabels(['Zinco', 'Ferro', 'Proteína', 'Magnésio', 'Fibras', 'Hidratação']),
+                datasets: [{
+                    label: 'Densidade Nutricional',
+                    data: [9, 8, 9, 7.5, 8.5, 10],
+                    backgroundColor: [
+                        'rgba(77, 150, 255, 0.7)',
+                        'rgba(78, 205, 196, 0.7)',
+                        'rgba(255, 107, 107, 0.7)',
+                        'rgba(255, 159, 67, 0.7)',
+                        'rgba(107, 203, 119, 0.7)',
+                        'rgba(74, 144, 226, 0.7)'
+                    ],
+                    borderColor: '#ffffff',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { r: { ticks: { display: false }, grid: { color: 'rgba(0, 0, 0, 0.05)' } } },
+                plugins: {
+                    legend: { position: 'bottom', labels: { padding: 20, font: { size: 11 } } },
+                    tooltip: sharedTooltipConfig
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia de Hidratação: Água para o Bebê</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        /* Palette: Fresh Start
+           Coral: #FF6B6B | Teal: #4ECDC4 | Yellow: #FFE66D | BG: #F7FFF7
+        */
+        body {
+            background-color: #F7FFF7;
+            color: #292F36;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        .card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+        .water-tag {
+            background-color: #4ECDC4;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: inline-block;
+        }
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <header class="max-w-4xl mx-auto text-center mb-12">
+        <h1 class="text-4xl font-bold text-[#4ECDC4] mb-2">Manual da Hidratação</h1>
+        <p class="text-gray-600 italic">Água: A companheira da comida</p>
+        <div class="h-1 w-24 bg-[#FFE66D] mx-auto mt-4 rounded-full"></div>
+    </header>
+
+    <main class="max-w-4xl mx-auto space-y-12">
+
+        <!-- INTRODUÇÃO -->
+        <section class="card p-6 border-l-8 border-[#4ECDC4]">
+            <div class="flex items-center space-x-4 mb-6">
+                <span class="text-4xl">💧</span>
+                <div>
+                    <h2 class="text-2xl font-bold">Por que começar agora?</h2>
+                    <span class="water-tag">Saúde Renal e Digestiva</span>
+                </div>
+            </div>
+            <p class="text-gray-700 leading-relaxed">
+                Até os 6 meses, o leite fornecia toda a hidratação. Agora, com os sólidos e fibras, os rins precisam de <strong>água livre</strong> para evitar a prisão de ventre. Lembre-se: a água não substitui o leite, ela complementa a comida.
+            </p>
+        </section>
+
+        <!-- CALCULADORA DINÂMICA ATUALIZADA -->
+        <section class="space-y-6">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-[#292F36]">Cálculo de Água Livre</h2>
+                <p class="text-gray-600 mt-2">Introduza o peso para saber quanto de <strong>água pura</strong> oferecer além do leite:</p>
+            </div>
+
+            <div class="card p-8 bg-[#F0FBFA] border-2 border-[#4ECDC4] max-w-md mx-auto">
+                <div class="flex flex-col items-center space-y-4">
+                    <label for="babyWeight" class="font-bold text-gray-700">Peso do Bebê (kg):</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="number" id="babyWeight" value="8" step="0.1" min="3" max="20" class="w-32 text-center text-2xl font-bold p-2 rounded-lg border-2 border-[#4ECDC4] text-[#4ECDC4] focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]">
+                        <span class="text-xl font-bold text-gray-500">kg</span>
+                    </div>
+                    <div class="text-center pt-4 border-t border-gray-200 w-full">
+                        <p class="text-gray-600">Meta de água extra sugerida:</p>
+                        <p id="resultText" class="text-3xl font-bold text-[#FF6B6B]">200 ml / dia</p>
+                        <p class="text-[10px] text-gray-400 mt-2 italic">*Baseado na recomendação de ~25ml/kg de água livre (SBP).</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-6">
+                <div class="chart-container mb-6">
+                    <canvas id="waterQuantityChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- ONDE OFERECER (O COPO) -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="card p-6 text-center border-t-4 border-[#FF6B6B]">
+                <div class="text-3xl mb-2">🥤</div>
+                <h3 class="font-bold mb-2 text-sm">Copo Aberto</h3>
+                <p class="text-xs text-gray-600">Gold Standard: melhor para o desenvolvimento motor oral.</p>
+            </div>
+            <div class="card p-6 text-center border-t-4 border-[#4ECDC4]">
+                <div class="text-3xl mb-2">🧉</div>
+                <h3 class="font-bold mb-2 text-sm">Copo 360º</h3>
+                <p class="text-xs text-gray-600">Boa transição para evitar grandes derramamentos.</p>
+            </div>
+            <div class="card p-6 text-center border-t-4 border-[#FFE66D]">
+                <div class="text-3xl mb-2">🥤</div>
+                <h3 class="font-bold mb-2 text-sm">Canudo</h3>
+                <p class="text-xs text-gray-600">Desenvolve a sucção madura e vedamento labial.</p>
+            </div>
+        </section>
+
+        <!-- FREQUÊNCIA DIÁRIA -->
+        <section class="card p-6">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold text-[#292F36]">Quando oferecer?</h2>
+                <p class="text-sm text-gray-500">Distribua em pequenos goles (sips) ao longo do dia.</p>
+            </div>
+            <div class="chart-container h-[400px]">
+                <canvas id="waterTimelineChart"></canvas>
+            </div>
+        </section>
+
+        <!-- REGRAS E DICAS -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="card p-6 border-r-8 border-[#FF6B6B]">
+                <h3 class="font-bold text-xl mb-4 flex items-center">🚫 Proibido: Sucos</h3>
+                <p class="text-sm text-gray-700 leading-relaxed">
+                    A SBP proíbe sucos antes de 1 ano. Eles ocupam o espaço da água e da comida, além de predispor à obesidade e cáries.
+                </p>
+            </div>
+            <div class="card p-6 border-r-8 border-[#4ECDC4]">
+                <h3 class="font-bold text-xl mb-4 flex items-center">💡 Atenção</h3>
+                <ul class="text-sm text-gray-700 space-y-3">
+                    <li class="flex items-start"><span class="mr-2">✔️</span> <strong>Livre Demanda:</strong> Se o bebê quiser mais, ofereça. Se quiser menos, não force.</li>
+                    <li class="flex items-start"><span class="mr-2">✔️</span> <strong>Hidratação Principal:</strong> O leite ainda é a maior fonte de líquidos.</li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-12 py-8 bg-[#292F36] text-white text-center rounded-t-3xl">
+        <p class="text-sm opacity-75">Guia de Hidratação • Baseado nas Diretrizes SBP 2024</p>
+    </footer>
+
+    <script>
+        function wrapLabels(labels) {
+            return labels.map(label => {
+                if (label.length > 16) {
+                    const words = label.split(' ');
+                    const lines = [];
+                    let currentLine = words[0];
+                    for (let i = 1; i < words.length; i++) {
+                        if ((currentLine + " " + words[i]).length <= 16) {
+                            currentLine += " " + words[i];
+                        } else {
+                            lines.push(currentLine);
+                            currentLine = words[i];
+                        }
+                    }
+                    lines.push(currentLine);
+                    return lines;
+                }
+                return label;
+            });
+        }
+
+        const sharedTooltipConfig = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    return Array.isArray(label) ? label.join(' ') : label;
+                }
+            }
+        };
+
+        const weightInput = document.getElementById('babyWeight');
+        const resultText = document.getElementById('resultText');
+        let qtyChart;
+
+        function updateWaterData() {
+            const weight = parseFloat(weightInput.value) || 0;
+            // Updated to ~25ml/kg as per SBP guidelines for extra free water
+            const targetMl = Math.round(weight * 25);
+            resultText.innerText = `${targetMl} ml / dia`;
+            if (qtyChart) {
+                qtyChart.data.datasets[0].data = [targetMl, 150];
+                qtyChart.update();
+            }
+        }
+
+        const ctxQty = document.getElementById('waterQuantityChart').getContext('2d');
+        qtyChart = new Chart(ctxQty, {
+            type: 'bar',
+            data: {
+                labels: wrapLabels(['Água Extra (ml/dia)', 'Capacidade Gástrica']),
+                datasets: [{
+                    label: 'Volume em ml',
+                    data: [200, 150],
+                    backgroundColor: ['#4ECDC4', '#FF6B6B'],
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: sharedTooltipConfig },
+                scales: { y: { beginAtZero: true, suggestedMax: 400 } }
+            }
+        });
+
+        const ctxTimeline = document.getElementById('waterTimelineChart').getContext('2d');
+        new Chart(ctxTimeline, {
+            type: 'bar',
+            data: {
+                labels: wrapLabels([
+                    'Após Café da Manhã', 
+                    'Durante Almoço (Goles)', 
+                    'Após o Almoço', 
+                    'Meio da Tarde', 
+                    'Após Lanche da Tarde'
+                ]),
+                datasets: [{
+                    label: 'Prioridade de Oferta',
+                    data: [20, 10, 30, 20, 20],
+                    backgroundColor: ['#FFE66D', '#4ECDC4', '#FF6B6B', '#6BCB77', '#4D96FF'],
+                    borderRadius: 10,
+                    barThickness: 30
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: sharedTooltipConfig,
+                    title: { display: true, text: 'Distribuição Sugerida ao Longo do Dia', font: { size: 14 } }
+                },
+                scales: {
+                    x: { display: false, beginAtZero: true },
+                    y: { grid: { display: false }, ticks: { font: { weight: 'bold' } } }
+                }
+            }
+        });
+
+        weightInput.addEventListener('input', updateWaterData);
+        updateWaterData();
+    </script>
+</body>
+</html>

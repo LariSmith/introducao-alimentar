@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia de Introdução Alimentar: 1ª Semana</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Custom Palette & Styles -->
+    <style>
+        /* Palette: Fresh Start
+           Primary (Coral): #FF6B6B
+           Secondary (Teal): #4ECDC4
+           Accent (Yellow): #FFE66D
+           Background: #F7FFF7
+           Text: #292F36
+        */
+        body {
+            background-color: #F7FFF7;
+            color: #292F36;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        /* Chart Container Rules - MANDATORY */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+
+        @media (max-width: 640px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            color: #FF6B6B;
+            border-bottom: 3px solid #FFE66D;
+            display: inline-block;
+            padding-bottom: 0.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details[open] summary span:last-child {
+            transform: rotate(180deg);
+        }
+
+        /* Navigation Buttons */
+        .nav-btn {
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .nav-btn:hover {
+            filter: brightness(1.1);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header / Hero -->
+    <header class="bg-[#4ECDC4] text-white py-12 px-4 shadow-lg">
+        <div class="max-w-6xl mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Guia de Introdução Alimentar</h1>
+            <p class="text-xl opacity-90">1ª Semana: Método Participativo & Praticidade</p>
+            
+            <!-- NEW: QUICK ACCESS LINKS -->
+            <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
+                <a href="rotina_a_detalhada.html" class="nav-btn bg-[#FF6B6B] text-white font-bold py-3 px-6 rounded-xl shadow-lg">
+                    <span>🥚</span> Ver Rotina A
+                </a>
+                <a href="rotina_b_detalhada.html" class="nav-btn bg-white text-[#4ECDC4] font-bold py-3 px-6 rounded-xl shadow-lg">
+                    <span>🍗</span> Ver Rotina B
+                </a>
+                <a href="guia_hidratacao.html" class="nav-btn bg-[#FFE66D] text-[#292F36] font-bold py-3 px-6 rounded-xl shadow-lg border-2 border-white/20">
+                    <span>💧</span> Guia de Água
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-12 space-y-16">
+
+        <!-- SECTION 1: NUTRITIONAL BALANCE -->
+        <section>
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold section-title">O Prato Ideal</h2>
+                <p class="text-lg text-gray-700 max-w-3xl mx-auto">
+                    Para garantir o crescimento e a energia necessária, o prato do almoço deve ser colorido e equilibrado.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="card p-6">
+                    <div class="chart-container">
+                        <canvas id="plateChart"></canvas>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="flex items-start">
+                        <div class="w-12 h-12 rounded-full bg-[#FF6B6B] text-white flex items-center justify-center text-2xl font-bold mr-4 shrink-0">1</div>
+                        <div>
+                            <h3 class="font-bold text-xl text-[#FF6B6B]">Proteína (Crescimento)</h3>
+                            <p class="text-gray-600 text-sm">Nesta semana: <strong>Frango</strong> e <strong>Ovo</strong>.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="w-12 h-12 rounded-full bg-[#4ECDC4] text-white flex items-center justify-center text-2xl font-bold mr-4 shrink-0">2</div>
+                        <div>
+                            <h3 class="font-bold text-xl text-[#4ECDC4]">Leguminosas (Ferro)</h3>
+                            <p class="text-gray-600 text-sm">Nesta semana: <strong>Feijão</strong> (caldo + grãos).</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="w-12 h-12 rounded-full bg-[#FFE66D] text-[#292F36] flex items-center justify-center text-2xl font-bold mr-4 shrink-0">3</div>
+                        <div>
+                            <h3 class="font-bold text-xl text-gray-800">Carboidratos (Energia)</h3>
+                            <p class="text-gray-600 text-sm">Nesta semana: <strong>Batatas</strong>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: THE WEEKLY PLAN -->
+        <section class="bg-white rounded-2xl shadow-xl p-8 border-t-8 border-[#4ECDC4]">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold section-title">Cronograma da 1ª Semana</h2>
+                <p class="text-lg text-gray-700">
+                    Para facilitar a rotina do papai, criamos um sistema de repetição inteligente. 
+                    Menos tempo na cozinha, mais tempo com o bebê.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Day A -->
+                <div class="border-2 border-[#FF6B6B] rounded-xl overflow-hidden">
+                    <div class="bg-[#FF6B6B] text-white p-4 text-center">
+                        <h3 class="text-2xl font-bold">Rotina A</h3>
+                        <p class="font-semibold opacity-90">Segunda • Quarta • Sexta</p>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-center justify-between border-b pb-2">
+                            <span class="font-bold text-gray-500">Café da Manhã</span>
+                            <span class="text-lg">🍌 Banana</span>
+                        </div>
+                        <div class="bg-red-50 p-4 rounded-lg border border-red-100">
+                            <div class="font-bold text-[#FF6B6B] mb-2 text-center uppercase tracking-wide">Almoço (Foco: Ovo)</div>
+                            <ul class="space-y-2">
+                                <li class="flex items-center"><span class="mr-2">🥔</span> Batata Amassada</li>
+                                <li class="flex items-center"><span class="mr-2">🫘</span> Feijão (Cubo Congelado)</li>
+                                <li class="flex items-center font-bold text-red-600"><span class="mr-2">🥚</span> OVO (Bem cozido)</li>
+                                <li class="flex items-center"><span class="mr-2">🥕</span> Cenoura (Palito na mão)</li>
+                            </ul>
+                            <div class="mt-3 text-xs text-red-500 font-bold bg-white p-2 rounded text-center">
+                                ⚠️ Observar alergias à tarde!
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between border-t pt-2">
+                            <span class="font-bold text-gray-500">Lanche Tarde</span>
+                            <span class="text-lg">🍎 Maçã (Raspada)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day B -->
+                <div class="border-2 border-[#4ECDC4] rounded-xl overflow-hidden">
+                    <div class="bg-[#4ECDC4] text-white p-4 text-center">
+                        <h3 class="text-2xl font-bold">Rotina B</h3>
+                        <p class="font-semibold opacity-90">Terça • Quinta • Sábado</p>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-center justify-between border-b pb-2">
+                            <span class="font-bold text-gray-500">Café da Manhã</span>
+                            <span class="text-lg">🥣 Mamão</span>
+                        </div>
+                        <div class="bg-teal-50 p-4 rounded-lg border border-teal-100">
+                            <div class="font-bold text-[#4ECDC4] mb-2 text-center uppercase tracking-wide">Almoço (Foco: Frango)</div>
+                            <ul class="space-y-2">
+                                <li class="flex items-center"><span class="mr-2">🥔</span> Batata Amassada</li>
+                                <li class="flex items-center"><span class="mr-2">🫘</span> Feijão (Cubo Congelado)</li>
+                                <li class="flex items-center"><span class="mr-2">🍗</span> Frango (Cubo Congelado)</li>
+                                <li class="flex items-center"><span class="mr-2">🥒</span> Abobrinha (Palito na mão)</li>
+                            </ul>
+                            <div class="mt-3 text-xs text-teal-600 font-bold bg-white p-2 rounded text-center">
+                                ✅ Rápido e prático
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between border-t pt-2">
+                            <span class="font-bold text-gray-500">Lanche Tarde</span>
+                            <span class="text-lg">🍐 Pera (Macia)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 bg-yellow-50 p-4 rounded-lg border-l-4 border-[#FFE66D] text-center">
+                <p class="text-gray-700"><strong>Domingo:</strong> Dia livre! Use sobras ou faça o que for mais simples para descansar.</p>
+            </div>
+        </section>
+        <!-- SECTION 3: COOKING SCIENCE -->
+        <section>
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold section-title">Ciência do Cozimento</h2>
+            </div>
+
+            <div class="card p-6">
+                <div class="chart-container">
+                    <canvas id="cookingChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: PRACTICAL GUIDES (EXPANDABLE) -->
+        <section>
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold section-title">Guias de Preparo</h2>
+            </div>
+
+            <div class="space-y-4">
+                <details class="group bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+                    <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition">
+                        <div class="flex items-center space-x-4">
+                            <span class="text-2xl">❄️</span>
+                            <h3 class="text-xl font-bold text-gray-800">Logística de Congelamento</h3>
+                        </div>
+                        <span class="text-[#FF6B6B] font-bold text-2xl transition-transform duration-300">↓</span>
+                    </summary>
+                    <div class="p-6 border-t border-gray-100 bg-gray-50 text-gray-700">
+                        <p class="text-sm mb-4">Aprenda a congelar o feijão e as carnes para ganhar tempo durante a semana.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                            <div class="bg-white p-3 rounded shadow-sm"><strong>Passo 1:</strong> Remolho do feijão por 12h.</div>
+                            <div class="bg-white p-3 rounded shadow-sm"><strong>Passo 2:</strong> Congelar em cubos de 30ml.</div>
+                            <div class="bg-white p-3 rounded shadow-sm"><strong>Passo 3:</strong> Descongelar na geladeira.</div>
+                        </div>
+                    </div>
+                </details>
+
+                <details class="group bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+                    <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition">
+                        <div class="flex items-center space-x-4">
+                            <span class="text-2xl">♨️</span>
+                            <h3 class="text-xl font-bold text-gray-800">Tutorial: Cozimento a Vapor</h3>
+                        </div>
+                        <span class="text-[#FF6B6B] font-bold text-2xl transition-transform duration-300">↓</span>
+                    </summary>
+                    <div class="p-6 border-t border-gray-100 bg-gray-50 text-gray-700">
+                        <p class="text-sm">Use uma peneira de metal sobre a panela de água. O vapor preserva os nutrientes fundamentais para o bebê.</p>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- SECTION 5: SAFETY -->
+        <section class="mb-12">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold section-title">Segurança & Hidratação</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card bg-red-50 border border-red-100 p-6 text-center">
+                    <div class="text-4xl mb-3">🧂</div>
+                    <h3 class="text-xl font-bold text-red-600">Sem Sal</h3>
+                    <p class="text-xs text-gray-700">Sobrecarga renal. Use temperos naturais.</p>
+                </div>
+                <div class="card bg-blue-50 border border-blue-100 p-6 text-center relative">
+                    <div class="text-4xl mb-3">💧</div>
+                    <h3 class="text-xl font-bold text-[#4ECDC4]">Água</h3>
+                    <p class="text-xs text-gray-700 mb-3">Fundamental com o início dos sólidos.</p>
+                    <a href="guia_hidratacao.html" class="text-sm font-bold text-blue-600 underline">Calcular ml por peso →</a>
+                </div>
+                <div class="card bg-red-50 border border-red-100 p-6 text-center">
+                    <div class="text-4xl mb-3">🍯</div>
+                    <h3 class="text-xl font-bold text-red-600">Sem Mel</h3>
+                    <p class="text-xs text-gray-700">Risco de botulismo até 1 ano.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-[#292F36] text-white py-8 text-center rounded-t-3xl">
+        <p class="opacity-70 text-sm">Gerado pelo Sr. Papinha • Diretrizes MS e SBP</p>
+    </footer>
+
+    <script>
+        function wrapLabels(labels) {
+            return labels.map(label => label.length > 16 ? label.split(' ') : label);
+        }
+
+        const sharedTooltipConfig = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    return Array.isArray(label) ? label.join(' ') : label;
+                }
+            }
+        };
+
+        const ctxPlate = document.getElementById('plateChart').getContext('2d');
+        new Chart(ctxPlate, {
+            type: 'doughnut',
+            data: {
+                labels: wrapLabels(['Carboidratos', 'Leguminosas', 'Proteína', 'Legumes']),
+                datasets: [{
+                    data: [25, 25, 25, 25],
+                    backgroundColor: ['#FFE66D', '#4ECDC4', '#FF6B6B', '#6BCB77'],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: sharedTooltipConfig
+                }
+            }
+        });
+
+        const ctxCooking = document.getElementById('cookingChart').getContext('2d');
+        new Chart(ctxCooking, {
+            type: 'bar',
+            data: {
+                labels: wrapLabels(['Abóbora', 'Abobrinha', 'Brócolis', 'Cenoura', 'Batata']),
+                datasets: [
+                    { label: 'Vapor (min)', data: [12, 8, 10, 15, 20], backgroundColor: '#4ECDC4', borderRadius: 4 },
+                    { label: 'Água (min)', data: [10, 6, 8, 12, 15], backgroundColor: '#FF6B6B', borderRadius: 4 }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: sharedTooltipConfig
+                },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    </script>
+</body>
+</html>

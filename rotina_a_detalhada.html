@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rotina A: Detalhes e Receitas</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        body {
+            background-color: #F7FFF7;
+            color: #292F36;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        .card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+        .benefit-tag {
+            background-color: #FF6B6B;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <header class="max-w-4xl mx-auto text-center mb-12">
+        <h1 class="text-4xl font-bold text-[#FF6B6B] mb-2">Manual da Rotina A</h1>
+        <p class="text-gray-600 italic">Segunda • Quarta • Sexta</p>
+        <div class="h-1 w-24 bg-[#FFE66D] mx-auto mt-4 rounded-full"></div>
+    </header>
+
+    <main class="max-w-4xl mx-auto space-y-12">
+
+        <!-- CAFE DA MANHA -->
+        <section class="card p-6 border-l-8 border-[#4ECDC4]">
+            <div class="flex items-center space-x-4 mb-6">
+                <span class="text-4xl">🍌</span>
+                <div>
+                    <h2 class="text-2xl font-bold">Café da Manhã: Banana Prata</h2>
+                    <span class="benefit-tag">Energia e Potássio</span>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-4">
+                    <p class="text-gray-700 text-sm"><strong>Benefício:</strong> Rica em carboidratos de absorção gradual e potássio, essencial para o funcionamento do coração e músculos.</p>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg border">
+                    <h4 class="font-bold mb-2 text-sm uppercase">👨‍🍳 Preparo:</h4>
+                    <p class="text-sm text-gray-600">Lave a casca, corte uma fatia longitudinal (palito) para a mão e amasse o restante com um garfo para a colher.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ALMOÇO DETALHADO -->
+        <section class="space-y-6">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-[#292F36]">Análise Nutricional do Prato</h2>
+                <p class="text-gray-600 mt-2">Veja quais nutrientes este prato fornece ao todo.</p>
+            </div>
+
+            <div class="card p-6">
+                <div class="chart-container mb-6">
+                    <canvas id="nutrientPolarChartA"></canvas>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card p-4 border-l-4 border-orange-400">
+                    <h3 class="font-bold text-gray-800">Vitamina A (Beta-caroteno)</h3>
+                    <p class="text-sm text-gray-600">Altíssima concentração vinda da cenoura e batata doce. Essencial para a saúde ocular e imunidade.</p>
+                </div>
+                <div class="card p-4 border-l-4 border-red-400">
+                    <h3 class="font-bold text-gray-800">Ferro & Proteína B12</h3>
+                    <p class="text-sm text-gray-600">O ovo e o feijão juntos garantem o aporte de ferro e proteínas para o crescimento.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- RECEITA MINUCIOSA ALMOÇO A -->
+        <section class="card p-8 bg-white border-2 border-[#FF6B6B]">
+            <h2 class="text-2xl font-bold text-[#FF6B6B] mb-6 flex items-center">
+                <span class="mr-2">📝</span> Receita Passo a Passo: Almoço A
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div class="col-span-1 bg-red-50 p-4 rounded-xl">
+                    <h4 class="font-bold text-red-800 mb-2 uppercase text-xs">Ingredientes Precisos</h4>
+                    <ul class="text-xs space-y-2 text-gray-700">
+                        <li>• 1 Ovo inteiro de galinha</li>
+                        <li>• 1 Cubo de feijão (30ml)</li>
+                        <li>• 1/2 Batata doce média (80g)</li>
+                        <li>• 1/2 Cenoura média (60g)</li>
+                        <li>• 1 dente de alho (inteiro)</li>
+                        <li>• 1 fio de azeite extravirgem</li>
+                    </ul>
+                </div>
+                <div class="col-span-2 space-y-4">
+                    <h4 class="font-bold text-gray-800 uppercase text-xs">Modo de Preparo Detalhado</h4>
+                    <ol class="text-sm space-y-3 text-gray-600">
+                        <li class="flex items-start">
+                            <span class="font-bold text-[#FF6B6B] mr-2">01.</span>
+                            <span><strong>Cozimento do Ovo:</strong> Coloque o ovo em uma panela com água fria. Quando ferver, conte exatamente 12 minutos em fogo médio. Retire e coloque em água gelada para parar o cozimento.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="font-bold text-[#FF6B6B] mr-2">02.</span>
+                            <span><strong>Cozimento dos Legumes:</strong> Corte a cenoura em palitos e a batata em rodelas. Coloque no vapor (com o dente de alho na água para dar aroma). Cozinhe por 15 min ou até que o garfo entre sem esforço.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="font-bold text-[#FF6B6B] mr-2">03.</span>
+                            <span><strong>Descongelamento:</strong> Aqueça o cubo de feijão em fogo baixo com um pingo de água filtrada até que ele esteja totalmente líquido e quente. Espere amornar.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="font-bold text-[#FF6B6B] mr-2">04.</span>
+                            <span><strong>Montagem do Prato:</strong> Amasse a batata com o feijão e o ovo cozido (clara e gema picadinhas/amassadas). Tempere com o azeite. Reserve os palitos de cenoura para a mão do bebê.</span>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                <p class="text-xs text-gray-600"><strong>Dica de Textura:</strong> A mistura de batata, feijão e ovo deve ficar úmida como um purê rústico. Se estiver seca, adicione uma colher de sopa da água do vapor.</p>
+            </div>
+        </section>
+
+        <!-- ALLERGY TIMELINE -->
+        <section class="card p-6 border-t-8 border-[#FF6B6B]">
+            <h2 class="text-2xl font-bold mb-4 text-center">Monitoramento Pós-Ovo</h2>
+            <div class="chart-container">
+                <canvas id="safetyTimeline"></canvas>
+            </div>
+        </section>
+
+        <!-- LANCHE DA TARDE -->
+        <section class="card p-6 border-l-8 border-[#FFE66D]">
+            <div class="flex items-center space-x-4 mb-6">
+                <span class="text-4xl">🍎</span>
+                <div>
+                    <h2 class="text-2xl font-bold">Lanche da Tarde: Maçã</h2>
+                    <span class="benefit-tag" style="background-color: #FFE66D; color: #292F36;">Fibras e Saciedade</span>
+                </div>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg border">
+                <h4 class="font-bold mb-2 text-sm uppercase">👨‍🍳 Como Preparar:</h4>
+                <p class="text-sm text-gray-600">Corte ao meio e raspe com uma colher de sobremesa, oferecendo a polpa fresca. Ou cozinhe pedaços sem casca no vapor por 5 min até ficarem moles.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-12 py-8 bg-[#292F36] text-white text-center rounded-t-3xl">
+        <p class="text-sm opacity-75">Guia Exclusivo para o Método Participativo</p>
+    </footer>
+
+    <script>
+        function wrapLabels(labels) {
+            return labels.map(l => {
+                if (Array.isArray(l)) return l;
+                return l.length > 16 ? l.split(' ') : l;
+            });
+        }
+
+        const sharedTooltipConfig = {
+            callbacks: {
+                title: (items) => {
+                    const label = items[0].chart.data.labels[items[0].dataIndex];
+                    return Array.isArray(label) ? label.join(' ') : label;
+                }
+            }
+        };
+
+        const ctxPolarA = document.getElementById('nutrientPolarChartA').getContext('2d');
+        new Chart(ctxPolarA, {
+            type: 'polarArea',
+            data: {
+                labels: wrapLabels(['Vitamina A', 'Ferro', 'Proteína B12', 'Fibras', 'Potássio', 'Vitamina C']),
+                datasets: [{
+                    label: 'Densidade Nutricional',
+                    data: [10, 8.5, 9.5, 8, 9, 7.5],
+                    backgroundColor: [
+                        'rgba(255, 159, 67, 0.7)', 
+                        'rgba(78, 205, 196, 0.7)', 
+                        'rgba(255, 107, 107, 0.7)',
+                        'rgba(107, 203, 119, 0.7)',
+                        'rgba(77, 150, 255, 0.7)', 
+                        'rgba(255, 230, 109, 0.7)'
+                    ],
+                    borderColor: '#ffffff',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { r: { ticks: { display: false }, grid: { color: 'rgba(0, 0, 0, 0.05)' } } },
+                plugins: {
+                    legend: { position: 'bottom', labels: { padding: 20, font: { size: 11 } } },
+                    tooltip: sharedTooltipConfig
+                }
+            }
+        });
+
+        const ctxSafety = document.getElementById('safetyTimeline').getContext('2d');
+        new Chart(ctxSafety, {
+            type: 'line',
+            data: {
+                labels: wrapLabels(['0 min (Almoço)', '30 min', '60 min', '90 min', '120 min (Fim da Janela)']),
+                datasets: [{
+                    label: 'Nível de Atenção',
+                    data: [5, 7, 10, 6, 2],
+                    borderColor: '#FF6B6B',
+                    backgroundColor: 'rgba(255, 107, 107, 0.1)',
+                    fill: true,
+                    stepped: true,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { 
+                    legend: { display: false }, 
+                    title: { display: true, text: 'Janela de Observação Alérgica (Ovo)' },
+                    tooltip: sharedTooltipConfig
+                },
+                scales: { y: { display: false } }
+            }
+        });
+    </script>
+</body>
+</html>
