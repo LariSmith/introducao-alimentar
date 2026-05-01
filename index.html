@@ -1,371 +1,1089 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guia de Introdução Alimentar: 1ª Semana</title>
-    <!-- Tailwind CSS -->
+    <title>Visualizador de Conversas CRM</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <!-- Custom Palette & Styles -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Palette: Fresh Start
-           Primary (Coral): #FF6B6B
-           Secondary (Teal): #4ECDC4
-           Accent (Yellow): #FFE66D
-           Background: #F7FFF7
-           Text: #292F36
-        */
-        body {
-            background-color: #F7FFF7;
-            color: #292F36;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
         }
-        
-        /* Chart Container Rules - MANDATORY */
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 350px;
-            max-height: 400px;
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1; 
         }
-
-        @media (max-width: 640px) {
-            .chart-container {
-                height: 300px;
-            }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 10px;
         }
-
-        .card {
-            background-color: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            transition: transform 0.2s;
-        }
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-
-        .section-title {
-            color: #FF6B6B;
-            border-bottom: 3px solid #FFE66D;
-            display: inline-block;
-            padding-bottom: 0.25rem;
-            margin-bottom: 1.5rem;
-        }
-
-        details summary::-webkit-details-marker {
-            display: none;
-        }
-        details[open] summary span:last-child {
-            transform: rotate(180deg);
-        }
-
-        /* Navigation Buttons */
-        .nav-btn {
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-        .nav-btn:hover {
-            filter: brightness(1.1);
-            transform: scale(1.05);
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="bg-slate-50 h-screen flex overflow-hidden font-sans text-slate-800">
 
-    <!-- Header / Hero -->
-    <header class="bg-[#4ECDC4] text-white py-12 px-4 shadow-lg">
-        <div class="max-w-6xl mx-auto text-center">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">Guia de Introdução Alimentar</h1>
-            <p class="text-xl opacity-90">1ª Semana: Método Participativo & Praticidade</p>
+    <div id="app" class="flex w-full h-full max-w-7xl mx-auto bg-white shadow-2xl overflow-hidden sm:rounded-lg sm:my-4 sm:h-[calc(100vh-2rem)] border border-slate-200">
+        
+        <!-- Sidebar -->
+        <div id="sidebar" class="w-full sm:w-1/3 md:w-80 bg-slate-50 border-r border-slate-200 flex flex-col h-full z-10 transition-transform duration-300">
+            <div class="p-4 border-b border-slate-200 bg-white flex justify-between items-center">
+                <h1 class="text-lg font-bold text-slate-700 flex items-center gap-2">
+                    <i data-lucide="message-square-text" class="w-5 h-5 text-blue-600"></i>
+                    Conversas CRM
+                </h1>
+                <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full" id="lead-count">0</span>
+            </div>
             
-            <!-- QUICK ACCESS LINKS (Updated with Painel de Dicas) -->
-            <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
-                <a href="rotina_a_detalhada.html" class="nav-btn bg-[#FF6B6B] text-white font-bold py-3 px-4 rounded-xl shadow-lg text-sm">
-                    <span>🥚</span> Rotina A
-                </a>
-                <a href="rotina_b_detalhada.html" class="nav-btn bg-white text-[#4ECDC4] font-bold py-3 px-4 rounded-xl shadow-lg text-sm">
-                    <span>🍗</span> Rotina B
-                </a>
-                <a href="guia_hidratacao.html" class="nav-btn bg-[#FFE66D] text-[#292F36] font-bold py-3 px-4 rounded-xl shadow-lg text-sm">
-                    <span>💧</span> Guia de Água
-                </a>
-                <a href="painel_dicas_consolidado.html" class="nav-btn bg-[#292F36] text-white font-bold py-3 px-4 rounded-xl shadow-lg text-sm border-2 border-white/10">
-                    <span>💡</span> Painel de Dicas
-                </a>
+            <div class="p-3">
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                        <i data-lucide="search" class="w-4 h-4 text-gray-400"></i>
+                    </div>
+                    <input type="text" id="searchInput" class="bg-white border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 shadow-sm" placeholder="Buscar por nome ou telefone...">
+                </div>
+            </div>
+
+            <div id="contact-list" class="flex-1 overflow-y-auto custom-scrollbar">
+                <!-- Contacts will be injected here -->
             </div>
         </div>
-    </header>
 
-    <main class="max-w-6xl mx-auto px-4 py-12 space-y-16">
-
-        <!-- SECTION 1: NUTRITIONAL BALANCE -->
-        <section>
-            <div class="text-center mb-8">
-                <h2 class="text-3xl font-bold section-title">O Prato Ideal</h2>
-                <p class="text-lg text-gray-700 max-w-3xl mx-auto">
-                    Para garantir o crescimento e a energia necessária, o prato do almoço deve ser colorido e equilibrado.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <div class="card p-6">
-                    <div class="chart-container">
-                        <canvas id="plateChart"></canvas>
-                    </div>
-                </div>
-                <div class="space-y-6">
-                    <div class="flex items-start">
-                        <div class="w-12 h-12 rounded-full bg-[#FF6B6B] text-white flex items-center justify-center text-2xl font-bold mr-4 shrink-0">1</div>
-                        <div>
-                            <h3 class="font-bold text-xl text-[#FF6B6B]">Proteína (Crescimento)</h3>
-                            <p class="text-gray-600 text-sm">Nesta semana: <strong>Frango</strong> e <strong>Ovo</strong>.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start">
-                        <div class="w-12 h-12 rounded-full bg-[#4ECDC4] text-white flex items-center justify-center text-2xl font-bold mr-4 shrink-0">2</div>
-                        <div>
-                            <h3 class="font-bold text-xl text-[#4ECDC4]">Leguminosas (Ferro)</h3>
-                            <p class="text-gray-600 text-sm">Nesta semana: <strong>Feijão</strong> (caldo + grãos).</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start">
-                        <div class="w-12 h-12 rounded-full bg-[#FFE66D] text-[#292F36] flex items-center justify-center text-2xl font-bold mr-4 shrink-0">3</div>
-                        <div>
-                            <h3 class="font-bold text-xl text-gray-800">Carboidratos (Energia)</h3>
-                            <p class="text-gray-600 text-sm">Nesta semana: <strong>Batatas</strong>.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 2: THE WEEKLY PLAN -->
-        <section class="bg-white rounded-2xl shadow-xl p-8 border-t-8 border-[#4ECDC4]">
-            <div class="text-center mb-10">
-                <h2 class="text-3xl font-bold section-title">Cronograma da 1ª Semana</h2>
-                <p class="text-lg text-gray-700">
-                    Para facilitar a rotina do papai, criamos um sistema de repetição inteligente. 
-                    Menos tempo na cozinha, mais tempo com o bebê.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Day A -->
-                <div class="border-2 border-[#FF6B6B] rounded-xl overflow-hidden">
-                    <div class="bg-[#FF6B6B] text-white p-4 text-center">
-                        <h3 class="text-2xl font-bold">Rotina A</h3>
-                        <p class="font-semibold opacity-90">Segunda • Quarta • Sexta</p>
-                    </div>
-                    <div class="p-6 space-y-4">
-                        <div class="flex items-center justify-between border-b pb-2">
-                            <span class="font-bold text-gray-500">Café da Manhã</span>
-                            <span class="text-lg">🍌 Banana</span>
-                        </div>
-                        <div class="bg-red-50 p-4 rounded-lg border border-red-100">
-                            <div class="font-bold text-[#FF6B6B] mb-2 text-center uppercase tracking-wide">Almoço (Foco: Ovo)</div>
-                            <ul class="space-y-2">
-                                <li class="flex items-center"><span class="mr-2">🥔</span> Batata Amassada</li>
-                                <li class="flex items-center"><span class="mr-2">🫘</span> Feijão (Cubo Congelado)</li>
-                                <li class="flex items-center font-bold text-red-600"><span class="mr-2">🥚</span> OVO (Bem cozido)</li>
-                                <li class="flex items-center"><span class="mr-2">🥕</span> Cenoura (Palito na mão)</li>
-                            </ul>
-                            <div class="mt-3 text-xs text-red-500 font-bold bg-white p-2 rounded text-center">
-                                ⚠️ Observar alergias à tarde!
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between border-t pt-2">
-                            <span class="font-bold text-gray-500">Lanche Tarde</span>
-                            <span class="text-lg">🍎 Maçã (Raspada)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Day B -->
-                <div class="border-2 border-[#4ECDC4] rounded-xl overflow-hidden">
-                    <div class="bg-[#4ECDC4] text-white p-4 text-center">
-                        <h3 class="text-2xl font-bold">Rotina B</h3>
-                        <p class="font-semibold opacity-90">Terça • Quinta • Sábado</p>
-                    </div>
-                    <div class="p-6 space-y-4">
-                        <div class="flex items-center justify-between border-b pb-2">
-                            <span class="font-bold text-gray-500">Café da Manhã</span>
-                            <span class="text-lg">🥣 Mamão</span>
-                        </div>
-                        <div class="bg-teal-50 p-4 rounded-lg border border-teal-100">
-                            <div class="font-bold text-[#4ECDC4] mb-2 text-center uppercase tracking-wide">Almoço (Foco: Frango)</div>
-                            <ul class="space-y-2">
-                                <li class="flex items-center"><span class="mr-2">🥔</span> Batata Amassada</li>
-                                <li class="flex items-center"><span class="mr-2">🫘</span> Feijão (Cubo Congelado)</li>
-                                <li class="flex items-center"><span class="mr-2">🍗</span> Frango (Cubo Congelado)</li>
-                                <li class="flex items-center"><span class="mr-2">🥒</span> Abobrinha (Palito na mão)</li>
-                            </ul>
-                            <div class="mt-3 text-xs text-teal-600 font-bold bg-white p-2 rounded text-center">
-                                ✅ Rápido e prático
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between border-t pt-2">
-                            <span class="font-bold text-gray-500">Lanche Tarde</span>
-                            <span class="text-lg">🍐 Pera (Macia)</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <!-- Chat Area -->
+        <div id="chat-area" class="hidden sm:flex flex-1 flex-col h-full bg-white relative w-full sm:w-auto absolute sm:static inset-0 z-20">
             
-            <div class="mt-8 bg-yellow-50 p-4 rounded-lg border-l-4 border-[#FFE66D] text-center">
-                <p class="text-gray-700"><strong>Domingo:</strong> Dia livre! Use sobras ou faça o que for mais simples para descansar.</p>
-            </div>
-        </section>
-        <!-- SECTION 3: COOKING SCIENCE -->
-        <section>
-            <div class="text-center mb-8">
-                <h2 class="text-3xl font-bold section-title">Ciência do Cozimento</h2>
+            <!-- Empty State -->
+            <div id="empty-state" class="flex-1 flex flex-col items-center justify-center text-slate-400 bg-slate-50/50">
+                <i data-lucide="messages-square" class="w-16 h-16 mb-4 text-slate-300"></i>
+                <h2 class="text-xl font-medium text-slate-600">Selecione uma conversa</h2>
+                <p class="text-sm mt-2">Escolha um contato na lista lateral para ver o histórico.</p>
             </div>
 
-            <div class="card p-6">
-                <div class="chart-container">
-                    <canvas id="cookingChart"></canvas>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 4: PRACTICAL GUIDES (EXPANDABLE) -->
-        <section>
-            <div class="text-center mb-8">
-                <h2 class="text-3xl font-bold section-title">Guias de Preparo</h2>
-            </div>
-
-            <div class="space-y-4">
-                <details class="group bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
-                    <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition">
-                        <div class="flex items-center space-x-4">
-                            <span class="text-2xl">❄️</span>
-                            <h3 class="text-xl font-bold text-gray-800">Logística de Congelamento</h3>
-                        </div>
-                        <span class="text-[#FF6B6B] font-bold text-2xl transition-transform duration-300">↓</span>
-                    </summary>
-                    <div class="p-6 border-t border-gray-100 bg-gray-50 text-gray-700">
-                        <p class="text-sm mb-4">Aprenda a congelar o feijão e as carnes para ganhar tempo durante a semana.</p>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                            <div class="bg-white p-3 rounded shadow-sm"><strong>Passo 1:</strong> Remolho do feijão por 12h.</div>
-                            <div class="bg-white p-3 rounded shadow-sm"><strong>Passo 2:</strong> Congelar em cubos de 30ml.</div>
-                            <div class="bg-white p-3 rounded shadow-sm"><strong>Passo 3:</strong> Descongelar na geladeira.</div>
-                        </div>
+            <!-- Chat Header -->
+            <div id="chat-header" class="hidden p-4 border-b border-slate-200 bg-white flex justify-between items-center shadow-sm z-10">
+                <div class="flex items-center gap-3">
+                    <button id="back-btn" class="sm:hidden p-2 -ml-2 text-slate-500 hover:text-slate-800 rounded-full hover:bg-slate-100">
+                        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                    </button>
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-lg shadow-inner" id="chat-avatar">
+                        ?
                     </div>
-                </details>
-
-                <details class="group bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
-                    <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition">
-                        <div class="flex items-center space-x-4">
-                            <span class="text-2xl">♨️</span>
-                            <h3 class="text-xl font-bold text-gray-800">Tutorial: Cozimento a Vapor</h3>
-                        </div>
-                        <span class="text-[#FF6B6B] font-bold text-2xl transition-transform duration-300">↓</span>
-                    </summary>
-                    <div class="p-6 border-t border-gray-100 bg-gray-50 text-gray-700">
-                        <p class="text-sm">Use uma peneira de metal sobre a panela de água. O vapor preserva os nutrientes fundamentais para o bebê.</p>
+                    <div>
+                        <h2 class="font-bold text-slate-800 text-lg leading-tight" id="chat-name">Nome do Contato</h2>
+                        <p class="text-sm text-slate-500 flex items-center gap-1">
+                            <i data-lucide="phone" class="w-3 h-3"></i>
+                            <span id="chat-phone">Telefone</span>
+                        </p>
                     </div>
-                </details>
-            </div>
-        </section>
-
-        <!-- SECTION 5: SAFETY -->
-        <section class="mb-12">
-            <div class="text-center mb-8">
-                <h2 class="text-3xl font-bold section-title">Segurança & Hidratação</h2>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="card bg-red-50 border border-red-100 p-6 text-center">
-                    <div class="text-4xl mb-3">🧂</div>
-                    <h3 class="text-xl font-bold text-red-600">Sem Sal</h3>
-                    <p class="text-xs text-gray-700">Sobrecarga renal. Use temperos naturais.</p>
                 </div>
-                <div class="card bg-blue-50 border border-blue-100 p-6 text-center relative">
-                    <div class="text-4xl mb-3">💧</div>
-                    <h3 class="text-xl font-bold text-[#4ECDC4]">Água</h3>
-                    <p class="text-xs text-gray-700 mb-3">Fundamental com o início dos sólidos.</p>
-                    <a href="guia_hidratacao.html" class="text-sm font-bold text-blue-600 underline">Calcular ml por peso →</a>
-                </div>
-                <div class="card bg-red-50 border border-red-100 p-6 text-center">
-                    <div class="text-4xl mb-3">🍯</div>
-                    <h3 class="text-xl font-bold text-red-600">Sem Mel</h3>
-                    <p class="text-xs text-gray-700">Risco de botulismo até 1 ano.</p>
+                <div class="flex items-center gap-2">
+                    <span id="chat-intent" class="hidden md:inline-flex bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded border border-slate-200 font-medium"></span>
+                    <span id="chat-temp" class="hidden md:inline-flex bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded border border-orange-200 font-medium"></span>
+                    <button id="info-btn" class="p-2 text-slate-500 hover:text-blue-600 rounded-full hover:bg-blue-50 transition-colors" title="Ver Detalhes do Lead">
+                        <i data-lucide="info" class="w-5 h-5"></i>
+                    </button>
                 </div>
             </div>
-        </section>
 
-    </main>
+            <!-- Chat Messages -->
+            <div id="chat-messages" class="hidden flex-1 overflow-y-auto p-4 custom-scrollbar bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-slate-50/50 space-y-4">
+                <!-- Messages will be injected here -->
+            </div>
 
-    <footer class="bg-[#292F36] text-white py-8 text-center rounded-t-3xl">
-        <p class="opacity-70 text-sm">Gerado pelo Sr. Papinha • Diretrizes MS e SBP</p>
-    </footer>
+            <!-- Chat Meta Panel (Slide in) -->
+            <div id="meta-panel" class="hidden absolute top-0 right-0 h-full w-full sm:w-80 bg-white border-l border-slate-200 shadow-2xl z-30 transform transition-transform duration-300 translate-x-full">
+                <div class="p-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+                    <h3 class="font-bold text-slate-700 flex items-center gap-2">
+                        <i data-lucide="clipboard-list" class="w-4 h-4 text-blue-600"></i>
+                        Detalhes do Lead
+                    </h3>
+                    <button id="close-meta-btn" class="text-slate-400 hover:text-slate-700 p-1 rounded-md hover:bg-slate-200">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                <div class="p-4 overflow-y-auto custom-scrollbar h-[calc(100%-60px)]" id="meta-content">
+                    <!-- Meta info injected here -->
+                </div>
+            </div>
+
+        </div>
+    </div>
 
     <script>
-        function wrapLabels(labels) {
-            return labels.map(label => label.length > 16 ? label.split(' ') : label);
+        // Data embedded directly from the provided JSON
+        const rawData = [
+  {
+    "id": "28413978",
+    "contact_id": "28413978",
+    "origin": "unknown",
+    "history": [
+      {
+        "role": "user",
+        "content": "Boa tarde, gostaria de saber se faz consulta online",
+        "created_at": 1777577932
+      },
+      {
+        "role": "assistant",
+        "content": "Boa tarde. Sim, a Dra. Thamiris oferece consultas online. Para darmos andamento, com quem eu falo e qual procedimento você busca?",
+        "metadata": {
+          "model": "langgraph",
+          "phase": "phase_0"
+        },
+        "created_at": 1777577941
+      },
+      {
+        "role": "user",
+        "content": "Sou do interior de São Paulo.\nE não tenho tempo pra ir a sua clínica, trabalho das 5 da manhã até a tarde.minha folga é só dia de domingos\nIsrael.\nQueria aumentar o tamanho e o engrossamento também",
+        "created_at": 1777578039
+      },
+      {
+        "role": "assistant",
+        "content": "Entendi, Israel. Para iniciarmos o mapeamento do seu plano de tratamento, preciso saber: o foco principal de ganho de volume hoje seria mais para o estado relaxado, ereto, ou um equilíbrio em ambos?",
+        "metadata": {
+          "model": "langgraph",
+          "phase": "phase_1"
+        },
+        "created_at": 1777578051
+      },
+      {
+        "role": "user",
+        "content": "Obrigado pela sua atenção",
+        "created_at": 1777578064
+      },
+      {
+        "role": "assistant",
+        "content": "Agradeço a sua resposta, Israel. Para que possamos avançar, preciso saber se o foco principal é no estado relaxado, ereto, ou um equilíbrio em ambos.",
+        "metadata": {
+          "model": "langgraph",
+          "phase": "phase_1"
+        },
+        "created_at": 1777578075
+      },
+      {
+        "role": "user",
+        "content": "Equilíbrio em ambos",
+        "created_at": 1777581971
+      },
+      {
+        "role": "assistant",
+        "content": "Perfeito, Israel. O protocolo da Dra. Thamiris para harmonização peniana visa aumentar o volume e a espessura, utilizando ácido hialurônico de alta reologia, que proporciona um toque natural e seguro. Com mais de 3.000 procedimentos realizados, a Dra. Thamiris é reconhecida pela sua experiência e pela segurança dos seus protocolos.\n\nO tratamento pode proporcionar um ganho médio de 3 a 5 cm de circunferência, com resultados que duram entre 12 a 24 meses, dependendo da anatomia e do cuidado pós-procedimento. Após a sessão, você poderá retomar suas atividades normais rapidamente, com algumas restrições que são comuns e que serão explicadas durante a consulta.\n\nSobre o funcionamento clínico do tratamento, restou alguma dúvida?",
+        "metadata": {
+          "model": "langgraph",
+          "phase": "phase_2"
+        },
+        "created_at": 1777581983
+      },
+      {
+        "role": "user",
+        "content": "Ok entendi.",
+        "created_at": 1777582735
+      },
+      {
+        "role": "assistant",
+        "content": "Ótimo, Israel. O próximo passo é agendar a consulta online para o mapeamento anatômico inicial. O valor da consulta online é de R$ 300. Você gostaria de agendar para algum dia específico?",
+        "metadata": {
+          "model": "langgraph",
+          "phase": "phase_3"
+        },
+        "created_at": 1777582745
+      },
+      {
+        "role": "user",
+        "content": "Devido como eu moro muito longe.\nNão tem como eu ir até a clínica",
+        "created_at": 1777582838
+      },
+      {
+        "role": "assistant",
+        "content": "Compreendo, Israel. A consulta online é uma excelente opção para quem está distante. Podemos agendar a avaliação virtual, que permitirá que você receba todas as orientações necessárias. \n\nO valor da consulta online é de R$ 300. Qual dia e horário seriam mais convenientes para você?",
+        "metadata": {
+          "model": "langgraph",
+          "phase": "phase_3"
+        },
+        "created_at": 1777582848
+      },
+      {
+        "role": "user",
+        "content": "Vou receber semana que vem.\nComo seria a consulta online?",
+        "created_at": 1777582889
+      },
+      {
+        "role": "assistant",
+        "content": "Ótimo! No formato Online o investimento da avaliação anatômica é de R$ 300. Para seguir com o agendamento, você prefere de manhã ou à tarde?",
+        "metadata": {
+          "model": "langgraph (gpt-4o-mini (phase4-normalized))",
+          "phase": "phase_4"
+        },
+        "created_at": 1777582899
+      },
+      {
+        "role": "user",
+        "content": "A tarde",
+        "created_at": 1777582944
+      },
+      {
+        "role": "assistant",
+        "content": "Entendido. Vou transferir o seu atendimento para a equipe responsável confirmar a disponibilidade.",
+        "metadata": {
+          "model": "langgraph (gpt-4o-mini (phase4-handoff))",
+          "phase": "phase_4"
+        },
+        "created_at": 1777582962
+      },
+      {
+        "role": "user",
+        "content": "Como é a consulta online.\n?",
+        "created_at": 1777582998
+      },
+      {
+        "role": "user",
+        "content": "No meu caso eu não vou poder ir até a clínica.\nComo faço pra fazer a aplicação",
+        "created_at": 1777583055
+      }
+    ],
+    "metadata": {
+      "sales_state": {
+        "name_and_procedure_identified": true,
+        "pain_identified": true,
+        "authority_presented": true,
+        "format_defined": true
+      },
+      "crm_data": {
+        "name": "Israel Vicente",
+        "tags": []
+      },
+      "detected_intent": "penile_harmonization",
+      "buying_stage": "consideration",
+      "lead_temperature": 0.7,
+      "confidence": 0.95,
+      "rationale": "A última mensagem do usuário menciona a consulta online, indicando interesse em agendar um atendimento, o que se alinha com a intenção de buscar tratamento.",
+      "name": "Israel",
+      "city": "interior de São Paulo",
+      "procedures": [
+        "Harmonização Peniana"
+      ],
+      "selected_consultation_city": "online"
+    },
+    "phone": "5516988489536",
+    "summary": ""
+  },
+  {
+    "id": "28386354",
+    "contact_id": "28386354",
+    "origin": "unknown",
+    "history": [
+      {
+        "role": "user",
+        "content": "queria saber do volor",
+        "created_at": 1777489258
+      },
+      {
+        "role": "user",
+        "content": "Wellington \nharmonização peniana",
+        "created_at": 1777496273
+      },
+      {
+        "role": "user",
+        "content": "tamanho e circunferência",
+        "created_at": 1777561417
+      },
+      {
+        "role": "user",
+        "content": "não",
+        "created_at": 1777569963
+      },
+      {
+        "role": "user",
+        "content": "depois que passar os 18 a 24 meses e fazer a manutenção ai fuça mais 18 a 24 meses?",
+        "created_at": 1777578553
+      },
+      {
+        "role": "user",
+        "content": "ai seria qual o valor para o procedimento",
+        "created_at": 1777581087
+      }
+    ],
+    "metadata": {
+      "crm_data": {
+        "name": "W10",
+        "tags": []
+      }
+    },
+    "phone": "5522998632083"
+  },
+  {
+    "id": "27341006",
+    "contact_id": "27341006",
+    "origin": "unknown",
+    "history": [
+      {
+        "role": "user",
+        "content": "Oi, anote tudo bem\nSim\nSou enfermeiro e biomédico\nPós graduado tenho alguns cursos",
+        "created_at": 1777484750
+      },
+      {
+        "role": "user",
+        "content": "Enfermeiro\nO conselho ativo",
+        "created_at": 1777487105
+      },
+      {
+        "role": "user",
+        "content": "Já tenho pós sin\nE 7 cursos\nNas na parte facial",
+        "created_at": 1777493997
+      },
+      {
+        "role": "user",
+        "content": "Legal",
+        "created_at": 1777494050
+      },
+      {
+        "role": "user",
+        "content": "Mande aí as redes dela\nEstava na correria de plantão",
+        "created_at": 1777579987
+      }
+    ],
+    "metadata": {
+      "crm_data": {
+        "name": "Lucas",
+        "tags": []
+      }
+    },
+    "phone": "11994672773"
+  },
+  {
+    "id": "26725336",
+    "contact_id": "26725336",
+    "origin": "unknown",
+    "history": [
+      {
+        "role": "user",
+        "content": "Quando que tá o valor\nBoa tarde",
+        "created_at": 1777573841
+      },
+      {
+        "role": "user",
+        "content": "Como que e  prosetemeto",
+        "created_at": 1777573895
+      },
+      {
+        "role": "user",
+        "content": "Como funciona esse procedimento tipo eu fazendo todo ano tem que ir fazer revisão\nQuantas sessão faz",
+        "created_at": 1777579479
+      }
+    ],
+    "metadata": {
+      "crm_data": {
+        "name": "lessfire127",
+        "tags": []
+      }
+    },
+    "phone": "5521970330861"
+  },
+  {
+    "id": "28414474",
+    "contact_id": "28414474",
+    "origin": "unknown",
+    "history": [
+      {
+        "role": "user",
+        "content": "Oi.\nVim do instagram e gostaria de ser atendido pela equipe da Dra Thamiris Ramos.",
+        "created_at": 1777578667
+      },
+      {
+        "role": "assistant",
+        "content": "Olá. Aqui é a Bia, consultora da Dra. Thamiris. Para iniciarmos o seu atendimento, com quem eu falo e qual procedimento você busca?",
+        "created_at": 1777578676
+      },
+      {
+        "role": "user",
+        "content": "Luiz, preenchimento peniano\nLuiz, harmonização peniana",
+        "created_at": 1777578837
+      },
+      {
+        "role": "assistant",
+        "content": "Perfeito, Luiz. Para começarmos a elaborar o seu plano de tratamento, preciso entender a sua expectativa: o foco principal de ganho de volume hoje seria mais para o estado relaxado, ereto, ou um equilíbrio em ambos?",
+        "created_at": 1777578851
+      },
+      {
+        "role": "user",
+        "content": "Em ambos",
+        "created_at": 1777578958
+      },
+      {
+        "role": "assistant",
+        "content": "Compreendido. A Dra. Thamiris é uma referência na área, com mais de 3.000 procedimentos realizados, e utiliza um protocolo de segurança e eficácia com ácido hialurônico de alta reologia. O objetivo é proporcionar um aumento de circunferência de 3 a 5 cm, mantendo um toque natural e sem cortes.\n\nO procedimento tem uma durabilidade de 12 a 24 meses, e as restrições pós-procedimento são mínimas, permitindo que você retome suas atividades rapidamente. A Dra. Thamiris também oferece acompanhamento direto para garantir os melhores resultados.\n\nSobre o funcionamento clínico do tratamento, restou alguma dúvida?",
+        "created_at": 1777578969
+      },
+      {
+        "role": "user",
+        "content": "Só valores mesmo",
+        "created_at": 1777579117
+      },
+      {
+        "role": "assistant",
+        "content": "O investimento para a Harmonização Peniana varia entre R$ 6.000 a R$ 8.000, dependendo da avaliação anatômica. \n\nPara iniciarmos o mapeamento inicial, você prefere atendimento presencial em São Paulo, presencial no Rio de Janeiro ou online?",
+        "created_at": 1777579128
+      },
+      {
+        "role": "user",
+        "content": "Rio\nTem data para quando?\nPode marcar uma consulta e se eu gostar fazer na mesma consulta?",
+        "created_at": 1777579217
+      },
+      {
+        "role": "assistant",
+        "content": "Entendido. Vou transferir o seu atendimento para a equipe responsável confirmar a disponibilidade.",
+        "created_at": 1777579227
+      }
+    ],
+    "metadata": {
+      "crm_data": {
+        "name": "Kaka",
+        "tags": []
+      },
+      "detected_intent": "penile_harmonization",
+      "client_intent": "urgent",
+      "buying_stage": "decision",
+      "lead_temperature": 1,
+      "name": "Luiz",
+      "procedures": [
+        "Harmonização Peniana",
+        "Preenchimento Peniano"
+      ]
+    },
+    "phone": "5521967003202",
+    "summary": ""
+  },
+  {
+    "id": "28377966",
+    "contact_id": "28377966",
+    "history": [
+      {
+        "role": "user",
+        "content": "Bom dia!\nTudo bem",
+        "created_at": 1777468765
+      },
+      {
+        "role": "user",
+        "content": "Olhei a proposta do curso gostei muito..",
+        "created_at": 1777468791
+      },
+      {
+        "role": "user",
+        "content": "gostei muito da proposta vou fazer o curso com vocês.. mais quero mais próximo quando colocar meu consultorio e tiver tudo pronto e concluido meu tcc..",
+        "created_at": 1777567906
+      }
+    ],
+    "metadata": {
+      "crm_data": {
+        "name": "Cleverson",
+        "tags": []
+      }
+    },
+    "phone": "556281377353"
+  },
+  {
+    "id": "28408716",
+    "contact_id": "28408716",
+    "history": [
+      {
+        "role": "user",
+        "content": "Tenho interesse na Harmonização Peniana no Rio de Janeiro.\nO som os valores\nO meu de tamanho eu acho bom mas eu queria ele mais grosso kkk",
+        "created_at": 1777560330
+      },
+      {
+        "role": "assistant",
+        "content": "Olá. Aqui é a Bia, consultora da Dra. Thamiris. Para darmos andamento ao seu atendimento, com quem eu falo e qual procedimento você busca?",
+        "created_at": 1777560342
+      },
+      {
+        "role": "user",
+        "content": "Grossura\nfagno cabral\nkkkk\nDepende do valor eu ia dar uma formulada kkk",
+        "created_at": 1777560533
+      },
+      {
+        "role": "assistant",
+        "content": "Fagno, entendi que você busca aumentar a grossura. O valor para o procedimento de harmonização peniana varia de R$ 6.000 a R$ 8.000, dependendo do planejamento anatômico que será feito.",
+        "created_at": 1777560544
+      },
+      {
+        "role": "user",
+        "content": "Eu achei muito caro\nEu acho que o meu pouca coisa resolvia",
+        "created_at": 1777560798
+      },
+      {
+        "role": "assistant",
+        "content": "Compreendo sua preocupação com o investimento, Fagno. É importante ressaltar que a Dra. Thamiris utiliza materiais de alta qualidade e tem um histórico de zero intercorrências.",
+        "created_at": 1777560806
+      },
+      {
+        "role": "user",
+        "content": "E outra coisa eu não sei o seu tenho coragem também não eu sou muito vergonhoso vai ter que ter acesso a Maria eu sou meio da roça kkkkkk",
+        "created_at": 1777561041
+      },
+      {
+        "role": "user",
+        "content": "Sim eu queria ver primeiro preço certinho e ver como é que é porque é difícil de eu voltar aqui eu queria fazer uma coisa só uma vez e ficasse bom ir e me deixa bem clara ver se compensa se não não adianta eu queria fazer pra ver mesmo se mudar alguma coisa mais curiosidade depende o preço dela fazer um trem que não fica caro e fica bom eu faria mas eu já e o dia de fazer\nA consulta é pagar",
+        "created_at": 1777561520
+      },
+      {
+        "role": "assistant",
+        "content": "Entendo suas preocupações, Fagno. A consulta é um investimento de R$ 400 no Rio de Janeiro. Esse valor é essencial, pois garante que você tenha acesso ao tempo da Dra. Thamiris, que é uma das maiores especialistas na área.",
+        "created_at": 1777561536
+      },
+      {
+        "role": "user",
+        "content": "Eu achei que era mais barato porque eu Não precisa eu acho sou satisfeito mas eu queria ficar mais bonito  kkk\nEntão é um dinheiro que eu vou gastar a toa\nobrigado 🙏🏻\nAtenção",
+        "created_at": 1777562903
+      },
+      {
+        "role": "assistant",
+        "content": "Entendo sua preocupação com o investimento. A Dra. Thamiris trabalha com materiais de alta qualidade e um protocolo seguro, o que garante resultados duradouros e uma experiência única. O foco aqui é a segurança e a eficácia do tratamento, não apenas o custo.",
+        "created_at": 1777562916
+      },
+      {
+        "role": "user",
+        "content": "blz\nSe fosse o line aí se eu tivesse interessam é um resultado da consulta eu faria",
+        "created_at": 1777563141
+      },
+      {
+        "role": "assistant",
+        "content": "Entendi. Se você optar pela consulta online, o investimento é de R$ 300. Isso permite que você tenha acesso à avaliação da Dra. Thamiris e entenda melhor o que pode ser feito para alcançar os resultados desejados.",
+        "created_at": 1777563156
+      }
+    ],
+    "metadata": {
+      "crm_data": {
+        "name": "Fagno Cabral"
+      },
+      "detected_intent": "penile_harmonization",
+      "city": "Rio de Janeiro",
+      "lead_temperature": 0.6,
+      "name": "Fagno",
+      "summary": "**Resumo da Conversa:**\n1. **Nome e Detalhes Pessoais:** Fagno Cabral, de Tocantins, atualmente no Rio.\n2. **Dúvidas:** Interessado no aumento da grossura. O valor foi informado (R$ 6.000 a R$ 8.000, consulta R$ 400 presencial ou R$ 300 online).\n3. **Objeções:** Achou o preço elevado, inseguro sobre a real necessidade. Foi contornado explicando a importância do planejamento e segurança.\n4. **Status:** Considerando a consulta online, mas com ressalvas."
+    },
+    "phone": "556384016088"
+  },
+  {
+    "id": "28393830",
+    "contact_id": "28393830",
+    "history": [
+      {
+        "role": "user",
+        "content": "Boa tarde",
+        "created_at": 1777481076
+      },
+      {
+        "role": "assistant",
+        "content": "Boa tarde. Aqui é a Bia, consultora da Dra. Thamiris. Para iniciarmos o seu atendimento, com quem eu falo e qual procedimento você busca?",
+        "created_at": 1777481083
+      },
+      {
+        "role": "user",
+        "content": "Sou Adilson luvizeto\nHarmonização",
+        "created_at": 1777481200
+      },
+      {
+        "role": "assistant",
+        "content": "Entendido, Adilson. Você está buscando informações sobre harmonização. Para prosseguirmos, poderia me informar sua formação? Você é médico, biomédico esteta, farmacêutico esteta, enfermeiro esteta, fisioterapeuta esteta ou biólogo esteta?",
+        "created_at": 1777481210
+      },
+      {
+        "role": "user",
+        "content": "Mais nó relexam\nQuanto fica 10 ml",
+        "created_at": 1777550456
+      }
+    ],
+    "metadata": {
+      "crm_data": {
+        "name": "Adilson Luvizeto"
+      },
+      "detected_intent": "course/harmonization",
+      "name": "Adilson"
+    },
+    "phone": "5515996404635"
+  },
+  {
+    "id": "28405536",
+    "contact_id": "28405536",
+    "history": [
+      {
+        "role": "user",
+        "content": "Olá! Tenho interesse e queria mais informações, por favor.\nBom dia!\nGostaria de saber mais sobre valores de consulta e procedimentos! Pq sou do interior do estado do RJ! Pelo menos uma cotação",
+        "created_at": 1777550457
+      },
+      {
+        "role": "assistant",
+        "content": "Olá. Aqui é a Bia, consultora da Dra. Thamiris. Para iniciarmos o seu atendimento, com quem eu falo e qual procedimento você busca?",
+        "created_at": 1777550467
+      },
+      {
+        "role": "user",
+        "content": "Bom dia Bia! Sou o Alexandre\nHarmonização peniana",
+        "created_at": 1777552774
+      },
+      {
+        "role": "assistant",
+        "content": "Com a sua indicação confirmada, Alexandre, para iniciarmos o rascunho do seu plano de tratamento, preciso entender a sua expectativa: o foco principal de ganho de volume hoje seria mais para o estado relaxado, ereto, ou um equilíbrio em ambos?",
+        "created_at": 1777552785
+      },
+      {
+        "role": "user",
+        "content": "Ambos",
+        "created_at": 1777552999
+      },
+      {
+        "role": "assistant",
+        "content": "Entendido. A Dra. Thamiris, com mais de 3.000 procedimentos realizados, utiliza uma técnica premium com ácido hialurônico de alta reologia, aplicada com cânula, garantindo segurança e ausência de cortes. O objetivo é aumentar a espessura e o volume, com uma expectativa de ganho de 3 a 5 cm de circunferência. \n\nAlém disso, o procedimento tem uma durabilidade que varia, e a recuperação é rápida, permitindo que você retome sua rotina normalmente. A Dra. Thamiris acompanha de perto cada caso, garantindo um atendimento personalizado e de excelência. \n\nSobre o funcionamento clínico do tratamento, restou alguma dúvida?",
+        "created_at": 1777553010
+      },
+      {
+        "role": "user",
+        "content": "Não!",
+        "created_at": 1777553217
+      },
+      {
+        "role": "assistant",
+        "content": "Perfeito, Alexandre. O próximo passo é o mapeamento anatômico inicial, que é essencial para definir o plano de tratamento. Você prefere agendar a consulta presencial no Rio de Janeiro, em São Paulo ou no formato online?",
+        "created_at": 1777553229
+      },
+      {
+        "role": "user",
+        "content": "Sou de Campos ,interior do RJ\nEntão provavelmente a consulta online seria + prudente no momento",
+        "created_at": 1777553376
+      },
+      {
+        "role": "user",
+        "content": "Além da consulta,  + ou - o valor do procedimento",
+        "created_at": 1777554650
+      }
+    ],
+    "metadata": {
+      "crm_data": {
+        "name": "Alexandre Ricardo"
+      },
+      "detected_intent": "penile_harmonization",
+      "city": "Campos, interior do RJ",
+      "name": "Alexandre",
+      "lead_temperature": 0.7
+    },
+    "phone": "5522999999664"
+  },
+  {
+    "id": "28406170",
+    "contact_id": "28406170",
+    "history": [
+      {
+        "role": "user",
+        "content": "Tenho interesse no Curso de Harmonização Peniana!",
+        "created_at": 1777550463
+      },
+      {
+        "role": "assistant",
+        "content": "Entendido. Para que eu possa te ajudar da melhor forma, poderia me informar sua formação? Você é médico, biomédico esteta, farmacêutico esteta, enfermeiro esteta, fisioterapeuta esteta ou biólogo esteta?",
+        "created_at": 1777550475
+      },
+      {
+        "role": "user",
+        "content": "Farmacêutico",
+        "created_at": 1777550809
+      },
+      {
+        "role": "assistant",
+        "content": "Excelente! Com sua formação em Farmácia, você está bem posicionado para aproveitar esta oportunidade. O que o trouxe até a harmonização íntima? Você busca um diferencial no mercado ou se interessou pela alta rentabilidade dessa área masculina?",
+        "created_at": 1777550816
+      },
+      {
+        "role": "user",
+        "content": "Rentabilidade",
+        "created_at": 1777551987
+      },
+      {
+        "role": "assistant",
+        "content": "Ótimo foco! A harmonização peniana realmente oferece uma alta rentabilidade. Com a técnica correta, os profissionais podem alcançar um ticket médio de R$ 15.000 a R$ 30.000 por paciente, considerando o protocolo completo. \n\nA Dra. Thamiris, com vasta experiência e mais de 3.000 procedimentos realizados, é uma referência no Brasil, e o curso oferece não apenas a técnica de injeção, mas também pilares de segurança, vendas e blindagem jurídica. Isso faz sentido para você?",
+        "created_at": 1777551994
+      },
+      {
+        "role": "user",
+        "content": "Sim. Sim. \nProssiga",
+        "created_at": 1777552232
+      },
+      {
+        "role": "assistant",
+        "content": "O curso de Harmonização Peniana tem um investimento de R$ 12.500,00 à vista, além de uma taxa de matrícula de R$ 500,00. Considerando a rentabilidade do procedimento, com apenas um paciente você já cobre o custo do curso.\n\nEssa proporção atende suas expectativas? Podemos garantir sua vaga na próxima turma?",
+        "created_at": 1777552240
+      },
+      {
+        "role": "user",
+        "content": "Quais as alternativas de pagamento?",
+        "created_at": 1777552338
+      },
+      {
+        "role": "assistant",
+        "content": "O pagamento do curso pode ser feito à vista ou parcelado no cartão de crédito, mas é importante mencionar que, se optar pelo parcelamento, haverá acréscimo da taxa da maquininha. A taxa de matrícula de R$ 500,00 deve ser paga no ato da inscrição e não é abatida do valor total do curso.\n\nVocê gostaria de seguir com a matrícula?",
+        "created_at": 1777552345
+      },
+      {
+        "role": "user",
+        "content": "No momento estou apenas cotando o valor. \nMeu cartão não está c esse limite ainda. \n\nBrevemente, dou algum retorno",
+        "created_at": 1777554599
+      }
+    ],
+    "metadata": {
+      "crm_data": {
+        "name": "Leonardo"
+      },
+      "detected_intent": "course",
+      "lead_temperature": 0.6
+    },
+    "phone": "5521981915602"
+  },
+  {
+    "id": "28406030",
+    "contact_id": "28406030",
+    "history": [
+      {
+        "role": "user",
+        "content": "Tenho interesse na Harmonização Peniana em São Paulo.",
+        "created_at": 1777550460
+      },
+      {
+        "role": "assistant",
+        "content": "Olá. Aqui é a Bia, consultora da Dra. Thamiris. Para iniciarmos o seu atendimento, com quem eu falo?",
+        "created_at": 1777550469
+      },
+      {
+        "role": "user",
+        "content": "Bom dia\nEdinaldo",
+        "created_at": 1777551146
+      },
+      {
+        "role": "assistant",
+        "content": "Bom dia, Edinaldo. Com a sua indicação confirmada, para iniciarmos o rascunho do seu plano de tratamento, preciso entender a sua expectativa: o foco principal de ganho de volume hoje seria mais para o estado relaxado, ereto, ou um equilíbrio em ambos?",
+        "created_at": 1777551156
+      },
+      {
+        "role": "user",
+        "content": "Seria o volume",
+        "created_at": 1777551594
+      },
+      {
+        "role": "assistant",
+        "content": "Entendi, Edinaldo. Para que eu possa direcionar o seu caso à Dra. Thamiris com precisão, a sua busca por volume está relacionada a uma retração excessiva (quando o pênis parece 'encolher' ou se esconder no corpo, especialmente no frio ou academia) ou a sua intenção é apenas por mais volume mesmo?",
+        "created_at": 1777551606
+      },
+      {
+        "role": "user",
+        "content": "Mais  volume mesmo",
+        "created_at": 1777551986
+      },
+      {
+        "role": "assistant",
+        "content": "Perfeito, Edinaldo. Buscaremos um equilíbrio proporcional. Para avançarmos, preciso saber se você prefere agendar a consulta presencial em São Paulo ou se tem interesse em um atendimento online.",
+        "created_at": 1777551997
+      },
+      {
+        "role": "user",
+        "content": "Fica a onde a clínica",
+        "created_at": 1777552180
+      },
+      {
+        "role": "assistant",
+        "content": "A clínica da Dra. Thamiris em São Paulo está localizada na Rua Manuel da Nóbrega, 354 - Paraíso. Você gostaria de agendar a consulta presencial nesse endereço ou prefere um atendimento online?",
+        "created_at": 1777552190
+      },
+      {
+        "role": "user",
+        "content": "Fica longe pra mim",
+        "created_at": 1777552447
+      },
+      {
+        "role": "assistant",
+        "content": "Entendo, Edinaldo. Se a localização for um impedimento, o atendimento online pode ser uma alternativa prática. Você gostaria de agendar a consulta online?",
+        "created_at": 1777552458
+      },
+      {
+        "role": "user",
+        "content": "Pode ser",
+        "created_at": 1777552565
+      },
+      {
+        "role": "assistant",
+        "content": "Ótimo, Edinaldo. O investimento para a consulta online é de R$ 300. Agora, para finalizar o agendamento, você pode me informar um dia e horário que sejam convenientes para você?",
+        "created_at": 1777552577
+      }
+    ],
+    "metadata": {
+      "crm_data": {
+        "name": "Edinaldo (bebê)"
+      },
+      "detected_intent": "penile_harmonization",
+      "city": "São Paulo",
+      "name": "Edinaldo",
+      "lead_temperature": 1
+    },
+    "phone": "5511966167791"
+  }
+];
+
+        let selectedChat = null;
+
+        // Utility: Convert Unix timestamp to localized time string
+        function formatTime(unixTimestamp) {
+            if (!unixTimestamp) return '';
+            // Checking if the timestamp is reasonable for today (mock data has 1777... which is future)
+            // Just format it nicely
+            const date = new Date(unixTimestamp * 1000);
+            return date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) + ' - ' + date.toLocaleDateString('pt-BR', {day: '2-digit', month: 'short'});
         }
 
-        const sharedTooltipConfig = {
-            callbacks: {
-                title: function(tooltipItems) {
-                    const item = tooltipItems[0];
-                    let label = item.chart.data.labels[item.dataIndex];
-                    return Array.isArray(label) ? label.join(' ') : label;
-                }
+        // Utility: get initials for avatar
+        function getInitials(name) {
+            if (!name || name.trim() === '') return '?';
+            const parts = name.trim().split(' ');
+            if (parts.length >= 2) {
+                return (parts[0][0] + parts[1][0]).toUpperCase();
             }
-        };
+            return parts[0][0].toUpperCase();
+        }
 
-        const ctxPlate = document.getElementById('plateChart').getContext('2d');
-        new Chart(ctxPlate, {
-            type: 'doughnut',
-            data: {
-                labels: wrapLabels(['Carboidratos', 'Leguminosas', 'Proteína', 'Legumes']),
-                datasets: [{
-                    data: [25, 25, 25, 25],
-                    backgroundColor: ['#FFE66D', '#4ECDC4', '#FF6B6B', '#6BCB77'],
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'bottom' },
-                    tooltip: sharedTooltipConfig
+        function getContactName(lead) {
+            return lead.metadata?.name || lead.metadata?.crm_data?.name || 'Cliente Sem Nome';
+        }
+
+        function renderSidebarList(filterText = '') {
+            const listEl = document.getElementById('contact-list');
+            listEl.innerHTML = '';
+
+            const lowerFilter = filterText.toLowerCase();
+
+            rawData.forEach((lead, index) => {
+                const name = getContactName(lead);
+                const phone = lead.phone || 'Sem número';
+                const intent = lead.metadata?.detected_intent === 'course' ? 'Curso/Mentoria' : (lead.metadata?.detected_intent === 'penile_harmonization' ? 'Procedimento' : 'Indefinido');
+
+                if (filterText && !name.toLowerCase().includes(lowerFilter) && !phone.includes(filterText)) {
+                    return; // Skip if it doesn't match
                 }
+
+                // Get last message snippet
+                const lastMsg = lead.history && lead.history.length > 0 ? lead.history[lead.history.length - 1].content : 'Nenhuma mensagem';
+                const shortMsg = lastMsg.length > 35 ? lastMsg.substring(0, 35) + '...' : lastMsg;
+                const lastMsgTime = lead.history && lead.history.length > 0 ? formatTime(lead.history[lead.history.length - 1].created_at) : '';
+
+                const div = document.createElement('div');
+                div.className = `p-4 border-b border-slate-100 cursor-pointer hover:bg-slate-50 transition-colors ${selectedChat === index ? 'bg-blue-50 border-l-4 border-l-blue-500' : 'border-l-4 border-l-transparent'}`;
+                
+                div.onclick = () => selectContact(index);
+
+                div.innerHTML = `
+                    <div class="flex justify-between items-start mb-1">
+                        <h3 class="font-semibold text-slate-800 text-sm truncate pr-2">${name}</h3>
+                        <span class="text-xs text-slate-400 whitespace-nowrap">${lastMsgTime.split(' - ')[0]}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <p class="text-xs text-slate-500 truncate mr-2">${shortMsg}</p>
+                        ${intent !== 'Indefinido' ? `<span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-medium ${intent === 'Curso/Mentoria' ? 'bg-purple-100 text-purple-700' : 'bg-green-100 text-green-700'}">${intent === 'Curso/Mentoria' ? 'Curso' : 'Clínica'}</span>` : ''}
+                    </div>
+                `;
+                listEl.appendChild(div);
+            });
+
+            // Re-initialize icons
+            lucide.createIcons();
+        }
+
+        function selectContact(index) {
+            selectedChat = index;
+            const lead = rawData[index];
+            const name = getContactName(lead);
+
+            // Hide empty state, show chat elements
+            document.getElementById('empty-state').classList.add('hidden');
+            document.getElementById('chat-header').classList.remove('hidden');
+            document.getElementById('chat-header').classList.add('flex');
+            document.getElementById('chat-messages').classList.remove('hidden');
+            
+            // On mobile, show chat area and hide sidebar
+            if (window.innerWidth < 640) {
+                document.getElementById('sidebar').classList.add('hidden');
+                document.getElementById('chat-area').classList.remove('hidden');
             }
+
+            // Update Header
+            document.getElementById('chat-name').textContent = name;
+            document.getElementById('chat-phone').textContent = `+${lead.phone}`;
+            document.getElementById('chat-avatar').textContent = getInitials(name);
+
+            // Badges
+            const intentEl = document.getElementById('chat-intent');
+            if (lead.metadata?.detected_intent) {
+                intentEl.textContent = lead.metadata.detected_intent === 'course' ? 'Interesse: Curso' : 'Interesse: Procedimento';
+                intentEl.classList.remove('hidden');
+            } else {
+                intentEl.classList.add('hidden');
+            }
+
+            const tempEl = document.getElementById('chat-temp');
+            if (lead.metadata?.lead_temperature) {
+                const temp = lead.metadata.lead_temperature;
+                tempEl.textContent = `Temperatura: ${Math.round(temp * 100)}%`;
+                tempEl.classList.remove('hidden');
+                if (temp >= 0.8) tempEl.className = "hidden md:inline-flex bg-red-100 text-red-700 text-xs px-2 py-1 rounded border border-red-200 font-medium";
+                else if (temp >= 0.5) tempEl.className = "hidden md:inline-flex bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded border border-orange-200 font-medium";
+                else tempEl.className = "hidden md:inline-flex bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded border border-blue-200 font-medium";
+            } else {
+                tempEl.classList.add('hidden');
+            }
+
+            // Render Messages
+            const messagesContainer = document.getElementById('chat-messages');
+            messagesContainer.innerHTML = '';
+            
+            if (lead.history && lead.history.length > 0) {
+                lead.history.forEach(msg => {
+                    const isUser = msg.role === 'user';
+                    const time = formatTime(msg.created_at);
+                    
+                    const bubbleWrapper = document.createElement('div');
+                    bubbleWrapper.className = `flex w-full ${isUser ? 'justify-start' : 'justify-end'}`;
+                    
+                    // Replace newlines with <br> for proper rendering
+                    const formattedContent = msg.content.replace(/\n/g, '<br>');
+
+                    bubbleWrapper.innerHTML = `
+                        <div class="max-w-[85%] md:max-w-[70%] rounded-2xl px-4 py-2.5 shadow-sm relative ${isUser ? 'bg-white text-slate-800 rounded-tl-sm border border-slate-200' : 'bg-blue-600 text-white rounded-tr-sm'}">
+                            <div class="text-sm leading-relaxed">${formattedContent}</div>
+                            <div class="text-[10px] text-right mt-1 ${isUser ? 'text-slate-400' : 'text-blue-200'}">
+                                ${time}
+                            </div>
+                        </div>
+                    `;
+                    messagesContainer.appendChild(bubbleWrapper);
+                });
+                
+                // Scroll to bottom
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            } else {
+                messagesContainer.innerHTML = '<div class="text-center text-slate-400 py-10">Nenhuma mensagem encontrada neste histórico.</div>';
+            }
+
+            // Update Meta Panel
+            renderMetaPanel(lead);
+
+            // Re-render sidebar to update the selected state visual
+            renderSidebarList(document.getElementById('searchInput').value);
+        }
+
+        function renderMetaPanel(lead) {
+            const content = document.getElementById('meta-content');
+            let html = '';
+
+            // Resumo
+            if (lead.metadata?.summary) {
+                // simple markdown bold parsing for the summary
+                const formattedSummary = lead.metadata.summary.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+                html += `
+                    <div class="mb-6">
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Resumo da IA</h4>
+                        <div class="bg-blue-50 border border-blue-100 rounded-lg p-3 text-sm text-slate-700 leading-relaxed shadow-sm">
+                            ${formattedSummary}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Info Gerais
+            html += `
+                <div class="mb-6">
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Dados do Cliente</h4>
+                    <ul class="space-y-3 bg-white border border-slate-100 rounded-lg p-3 shadow-sm">
+                        <li class="flex justify-between items-center text-sm border-b border-slate-50 pb-2">
+                            <span class="text-slate-500">Nome:</span>
+                            <span class="font-medium text-slate-800">${getContactName(lead)}</span>
+                        </li>
+                        <li class="flex justify-between items-center text-sm border-b border-slate-50 pb-2">
+                            <span class="text-slate-500">Telefone:</span>
+                            <span class="font-medium text-slate-800">+${lead.phone}</span>
+                        </li>
+                        <li class="flex justify-between items-center text-sm border-b border-slate-50 pb-2">
+                            <span class="text-slate-500">Cidade:</span>
+                            <span class="font-medium text-slate-800">${lead.metadata?.city || 'Não identificada'}</span>
+                        </li>
+                        <li class="flex justify-between items-center text-sm">
+                            <span class="text-slate-500">Procedimento:</span>
+                            <span class="font-medium text-slate-800 text-right">${lead.metadata?.procedures ? lead.metadata.procedures.join(', ') : 'Não identificado'}</span>
+                        </li>
+                    </ul>
+                </div>
+            `;
+
+            // CRM Analytics
+            const intent = lead.metadata?.detected_intent || 'N/A';
+            const stage = lead.metadata?.buying_stage || 'N/A';
+            const maturity = lead.metadata?.lead_maturity || 'N/A';
+            const effort = lead.metadata?.interaction_effort || 'N/A';
+            const score = lead.metadata?.engagement_score || 'N/A';
+
+            html += `
+                <div class="mb-6">
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Métricas de Venda</h4>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="bg-slate-50 p-2 rounded border border-slate-100">
+                            <div class="text-[10px] text-slate-400">Estágio de Compra</div>
+                            <div class="text-sm font-semibold text-slate-700 capitalize">${stage.replace('_', ' ')}</div>
+                        </div>
+                        <div class="bg-slate-50 p-2 rounded border border-slate-100">
+                            <div class="text-[10px] text-slate-400">Maturidade</div>
+                            <div class="text-sm font-semibold text-slate-700 capitalize">${maturity.replace('_', ' ')}</div>
+                        </div>
+                        <div class="bg-slate-50 p-2 rounded border border-slate-100">
+                            <div class="text-[10px] text-slate-400">Esforço Interação</div>
+                            <div class="text-sm font-semibold text-slate-700 capitalize">${effort.replace('_', ' ')}</div>
+                        </div>
+                        <div class="bg-slate-50 p-2 rounded border border-slate-100">
+                            <div class="text-[10px] text-slate-400">Score Engajamento</div>
+                            <div class="text-sm font-semibold text-blue-600">${score} / 10</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            content.innerHTML = html;
+        }
+
+        // Event Listeners
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            renderSidebarList(e.target.value);
         });
 
-        const ctxCooking = document.getElementById('cookingChart').getContext('2d');
-        new Chart(ctxCooking, {
-            type: 'bar',
-            data: {
-                labels: wrapLabels(['Abóbora', 'Abobrinha', 'Brócolis', 'Cenoura', 'Batata']),
-                datasets: [
-                    { label: 'Vapor (min)', data: [12, 8, 10, 15, 20], backgroundColor: '#4ECDC4', borderRadius: 4 },
-                    { label: 'Água (min)', data: [10, 6, 8, 12, 15], backgroundColor: '#FF6B6B', borderRadius: 4 }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    tooltip: sharedTooltipConfig
-                },
-                scales: { y: { beginAtZero: true } }
-            }
+        document.getElementById('back-btn').addEventListener('click', () => {
+            document.getElementById('chat-area').classList.add('hidden');
+            document.getElementById('sidebar').classList.remove('hidden');
         });
+
+        const metaPanel = document.getElementById('meta-panel');
+        document.getElementById('info-btn').addEventListener('click', () => {
+            metaPanel.classList.toggle('hidden');
+            // Small timeout to allow display:block to apply before animating transform
+            setTimeout(() => {
+                metaPanel.classList.toggle('translate-x-full');
+            }, 10);
+        });
+
+        document.getElementById('close-meta-btn').addEventListener('click', () => {
+            metaPanel.classList.add('translate-x-full');
+            setTimeout(() => {
+                metaPanel.classList.add('hidden');
+            }, 300);
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('lead-count').textContent = rawData.length;
+            renderSidebarList();
+            lucide.createIcons();
+        });
+
     </script>
 </body>
 </html>
